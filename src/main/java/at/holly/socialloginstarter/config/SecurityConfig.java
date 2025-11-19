@@ -4,13 +4,13 @@ import at.holly.socialloginstarter.service.CustomOAuth2UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
 import static org.springframework.security.config.Customizer.withDefaults;
 
 /**
  * Security configuration for OAuth2 social login.
- *
  * This configuration demonstrates understanding of:
  * 1. OAuth2 Authorization Code Grant flow
  * 2. Proper endpoint protection with Spring Security
@@ -29,7 +29,6 @@ public class SecurityConfig {
 
     /**
      * Configures the security filter chain for OAuth2 social login.
-     *
      * OAuth2 Flow:
      * 1. User accesses protected resource -> redirected to /oauth2/authorization/{registrationId}
      * 2. Spring Security redirects to OAuth2 provider's authorization endpoint
@@ -58,7 +57,7 @@ public class SecurityConfig {
                 // H2 Console requires frames and CSRF to be disabled
                 // Only for development - REMOVE in production
                 .headers(headers -> headers
-                        .frameOptions(frameOptions -> frameOptions.sameOrigin())
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )
                 .csrf(csrf -> csrf
                         .ignoringRequestMatchers("/h2-console/**")

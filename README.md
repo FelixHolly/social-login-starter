@@ -176,7 +176,7 @@ Demonstrates understanding of data persistence in OAuth2 applications:
 
 ### Prerequisites
 
-- Java 17 or higher
+- Java 25
 - Maven 3.6+
 - GitHub account (for OAuth2 app registration)
 
