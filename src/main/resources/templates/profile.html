@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile - OAuth2 Demo</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+        h1 {
+            color: #333;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        .info-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info-section h2 {
+            color: #333;
+            font-size: 18px;
+            margin-bottom: 15px;
+        }
+        .info-row {
+            display: grid;
+            grid-template-columns: 200px 1fr;
+            gap: 15px;
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .info-row:last-child {
+            border-bottom: none;
+        }
+        .label {
+            color: #666;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .value {
+            color: #333;
+            font-size: 14px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        .badge-oauth {
+            background: #667eea;
+            color: white;
+        }
+        .badge-form {
+            background: #64748b;
+            color: white;
+        }
+        .authorities-list {
+            list-style: none;
+        }
+        .authorities-list li {
+            padding: 6px 12px;
+            margin: 5px 0;
+            background: #e0e7ff;
+            border-radius: 6px;
+            color: #4338ca;
+            font-size: 13px;
+            font-family: monospace;
+        }
+        .button-group {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-block;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>User Profile</h1>
+        <p class="subtitle">Detailed authentication information</p>
+
+        <div class="info-section">
+            <h2>Authentication Details</h2>
+            <div class="info-row">
+                <div class="label">Username:</div>
+                <div class="value" th:text="${username}">username</div>
+            </div>
+            <div class="info-row">
+                <div class="label">Authentication Type:</div>
+                <div class="value">
+                    <span th:if="${provider == 'OAuth2'}" class="badge badge-oauth">OAuth2</span>
+                    <span th:if="${provider == 'Form Login'}" class="badge badge-form">Form Login</span>
+                </div>
+            </div>
+            <div class="info-row">
+                <div class="label">Authorities:</div>
+                <div class="value">
+                    <ul class="authorities-list" th:if="${authorities}">
+                        <li th:each="authority : ${authorities}" th:text="${authority.authority}">ROLE_USER</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="info-section" th:if="${provider == 'OAuth2'}">
+            <h2>OAuth2 Provider Attributes</h2>
+            <p style="color: #666; font-size: 13px; margin-bottom: 15px;">
+                These are the raw attributes returned by the OAuth2 provider.
+                Different providers return different data structures.
+            </p>
+            <div style="background: white; padding: 15px; border-radius: 6px; max-height: 400px; overflow-y: auto;">
+                <pre style="margin: 0; font-size: 12px; color: #333; white-space: pre-wrap; word-wrap: break-word;" th:text="${attributes}">No attributes</pre>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>Understanding the Data</h2>
+            <div style="color: #666; font-size: 14px; line-height: 1.8;">
+                <p style="margin-bottom: 10px;"><strong>Username:</strong> The principal name from the authentication object.</p>
+                <p style="margin-bottom: 10px;"><strong>Authorities:</strong> Granted authorities/roles for access control. Spring Security automatically grants ROLE_USER to OAuth2 authenticated users.</p>
+                <p style="margin-bottom: 10px;"><strong>OAuth2 Attributes:</strong> Raw data from the provider's userinfo endpoint. This includes user ID, email, name, profile picture, and other provider-specific fields.</p>
+            </div>
+        </div>
+
+        <div class="button-group">
+            <a href="/" class="btn btn-secondary">Home</a>
+            <a href="/secure" class="btn btn-primary">Secure Page</a>
+        </div>
+    </div>
+</body>
+</html>
