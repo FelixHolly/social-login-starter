@@ -8,13 +8,11 @@ import java.util.Optional;
 
 /**
  * JPA Repository for User entity.
- *
  * This demonstrates understanding of:
  * - Spring Data JPA repository pattern
  * - Custom query methods using method naming conventions
  * - Finding users by composite natural key (provider + providerId)
  * - Optional return types for null safety
- *
  * Spring Data JPA automatically implements this interface at runtime,
  * providing CRUD operations and custom query methods.
  */
@@ -23,12 +21,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     /**
      * Finds a user by their OAuth2 provider and provider-specific ID.
-     *
      * This is the key lookup for OAuth2 authentication:
      * - When a user logs in via GitHub with ID "12345", we search for provider="github" and providerId="12345"
      * - If found, we update their info (name, email, lastLoginAt)
      * - If not found, we create a new user record
-     *
      * Spring Data JPA automatically generates the query:
      * SELECT * FROM users WHERE provider = ? AND provider_id = ?
      *

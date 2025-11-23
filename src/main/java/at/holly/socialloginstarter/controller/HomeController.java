@@ -19,7 +19,6 @@ public class HomeController {
 
     /**
      * Home page - accessible to everyone.
-     *
      * Shows different content based on whether user is authenticated:
      * - Authenticated: Welcome message with user info
      * - Not authenticated: Login options
